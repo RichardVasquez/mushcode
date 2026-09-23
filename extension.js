@@ -2,8 +2,96 @@ const vscode = require("vscode");
 const { formatter } = require("@digibear/mush-format");
 const { default: axios } = require("axios");
 const path = require("path");
+const { findBlockComments } = require("./block-comments");
+
+const blockCommentLegend = new vscode.SemanticTokensLegend(["comment"]);
+
+function blockCommentsEnabled() {
+  return vscode.workspace
+    .getConfiguration("mushcode")
+    .get("blockComments.enabled", true);
+}
+
+function languageConfiguration() {
+  const comments = { lineComment: "//" };
+  if (blockCommentsEnabled()) {
+    comments.blockComment = ["/*", "*/"];
+  }
+
+  return {
+    comments,
+    brackets: [
+      ["{", "}"],
+      ["[", "]"],
+      ["(", ")"],
+    ],
+    autoClosingPairs: [
+      ["{", "}"],
+      ["[", "]"],
+      ["(", ")"],
+      ['"', '"'],
+      ["'", "'"],
+    ],
+    surroundingPairs: [
+      ["{", "}"],
+      ["[", "]"],
+      ["(", ")"],
+      ['"', '"'],
+      ["'", "'"],
+    ],
+  };
+}
 
 function activate(context) {
+  const blockCommentTokensChanged = new vscode.EventEmitter();
+  let languageConfigurationRegistration =
+    vscode.languages.setLanguageConfiguration(
+      "mush",
+      languageConfiguration()
+    );
+
+  const blockCommentProvider =
+    vscode.languages.registerDocumentSemanticTokensProvider(
+      { language: "mush" },
+      {
+        onDidChangeSemanticTokens: blockCommentTokensChanged.event,
+        provideDocumentSemanticTokens(document) {
+          const builder = new vscode.SemanticTokensBuilder(blockCommentLegend);
+
+          if (blockCommentsEnabled()) {
+            findBlockComments(document.getText()).forEach((range) => {
+              builder.push(
+                range.line,
+                range.character,
+                range.length,
+                0,
+                0
+              );
+            });
+          }
+
+          return builder.build();
+        },
+      },
+      blockCommentLegend
+    );
+
+  const configurationChanged = vscode.workspace.onDidChangeConfiguration(
+    (event) => {
+      if (!event.affectsConfiguration("mushcode.blockComments.enabled")) {
+        return;
+      }
+
+      languageConfigurationRegistration.dispose();
+      languageConfigurationRegistration =
+        vscode.languages.setLanguageConfiguration(
+          "mush",
+          languageConfiguration()
+        );
+      blockCommentTokensChanged.fire();
+    }
+  );
+
   let disposable = vscode.commands.registerCommand(
     "extension.format",
     async function () {
@@ -68,7 +156,14 @@ function activate(context) {
     }
   );
 
-  context.subscriptions.push(disposable, disposable2);
+  context.subscriptions.push(
+    disposable,
+    disposable2,
+    blockCommentProvider,
+    blockCommentTokensChanged,
+    configurationChanged,
+    { dispose: () => languageConfigurationRegistration.dispose() }
+  );
 }
 
 exports.activate = activate;

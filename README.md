@@ -14,6 +14,14 @@ First, update your settings to include your RhostMUSH API key and the name of yo
 
 You can also se the keyboard shortcut `ctrl-shift-f` to send the code to RHOST.
 
+### RHOST compatibility note
+
+Axios was updated to reduce the known vulnerability surface in the optional
+RHOST posting feature. The extension builds successfully with the updated
+version, but posting to a live RhostMUSH API endpoint has not been verified.
+Users of this feature should test it against their own game before relying on
+it and report any compatibility issues.
+
 * [1] http://rhostmush.org
 
 
@@ -41,6 +49,10 @@ Translates to:
 @@ This comment will appear in the compressed code.
 @@ Great for leaving notes in your final compressed code block!
 ```
+
+C-style block comment highlighting (`/* ... */`) is enabled by default. Set
+`mushcode.blockComments.enabled` to `false` to treat those characters as normal
+MUSHCode text. This does not change `//` or `@@` comment highlighting.
 
 ## Meta Tags
 

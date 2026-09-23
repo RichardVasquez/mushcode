@@ -4,7 +4,7 @@
   "description": "A softcode unformatter+",
   "repository": "https://github.com/lcanady/mushcode",
   "icon": "mushcode.png",
-  "version": "0.3.6",
+  "version": "0.4.1",
   "engines": {
     "vscode": "^1.71.0"
   },
@@ -19,7 +19,7 @@
     "Formatters"
   ],
   "activationEvents": [
-    "onLanguage:mushcode",
+    "onLanguage:mush",
     "onCommand:extension.format",
     "onCommand:extension.postSelection"
   ],
@@ -47,6 +47,11 @@
           "type": "number",
           "default": 4203,
           "description": "The Port for your RhostMUSH game."
+        },
+        "mushcode.blockComments.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Highlight /* ... */ as block comments and enable block comment editing commands."
         }
       }
     },
@@ -101,12 +106,21 @@
         "scopeName": "text.mush",
         "path": "./syntaxes/mush.tmLanguage.json"
       }
+    ],
+    "semanticTokenScopes": [
+      {
+        "language": "mush",
+        "scopes": {
+          "comment": [
+            "comment.block.mush"
+          ]
+        }
+      }
     ]
   },
   "dependencies": {
-    "@digibear/mush-format": "^1.2.4",
-    "axios": "^0.27.2",
-    "mushcode": "file:"
+    "@digibear/mush-format": "1.2.4",
+    "axios": "^1.20.0"
   },
   "devDependencies": {
     "esbuild": "^0.15.7"
