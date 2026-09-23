@@ -16,7 +16,11 @@ function activate(context) {
       let filepath = editor.document.fileName;
       filepath = path.dirname(filepath);
       const selection = editor.selection;
-      const text = document.getText(selection);
+      if (selection.isEmpty) {
+        vscode.window.showWarningMessage("Select the MUSH code to format first.");
+        return;
+      }
+      const text = document.getText(selection).replace(/\r\n?/g, "\n");
       const formatted = await formatter.format(text, filepath);
       vscode.env.clipboard.writeText(formatted.data);
     }
@@ -32,7 +36,11 @@ function activate(context) {
       }
       const document = editor.document;
       const selection = editor.selection;
-      const text = document.getText(selection);
+      if (selection.isEmpty) {
+        vscode.window.showWarningMessage("Select the MUSH code to post first.");
+        return;
+      }
+      const text = document.getText(selection).replace(/\r\n?/g, "\n");
       const formatted = await formatter.format(text);
       const user = vscode.workspace.getConfiguration("game").get("dbref");
       const pass = vscode.workspace.getConfiguration("game").get("password");

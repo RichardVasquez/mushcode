@@ -17,11 +17,6 @@
     "comments": {
       "patterns": [
         {
-          "begin": "/\\*",
-          "end": "\\*/",
-          "name": "comment.block.mush"
-        },
-        {
           "begin": "//",
           "end": "$",
           "name": "comment.line.mush"
