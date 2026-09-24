@@ -1,5 +1,5 @@
 const vscode = require("vscode");
-const { formatter } = require("@digibear/mush-format");
+const { formatter } = require("@penguinpark/mush-format");
 const { default: axios } = require("axios");
 const path = require("path");
 const { findBlockComments } = require("./block-comments");

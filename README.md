@@ -7,6 +7,13 @@ Vasquez. It is not intended to remain compatible with later upstream releases.
 The original MIT-licensed work and attribution are retained in
 `LICENSES/MIT.txt`.
 
+## Installation
+
+Download the `.vsix` file from the corresponding GitHub release. In VS Code,
+run **Extensions: Install from VSIX...** and select the downloaded package.
+The extension is distributed independently and is not published through the
+Visual Studio Marketplace.
+
 ## Basic formatting
 
 The formatter is available as a context menu item.  Just select the code you want to format, right click, and select "Format mushcode".  That's it.
@@ -139,6 +146,6 @@ think %chThis will be included in the processed code!%cn
 
 ## development
 ```
-git clone https//github.com/lcanady/mushcode.git
+git clone https://github.com/RichardVasquez/mushcode.git
 npm install
 ```

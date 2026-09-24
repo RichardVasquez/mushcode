@@ -1,6 +1,6 @@
 const assert = require("node:assert/strict");
 const test = require("node:test");
-const { formatter } = require("@digibear/mush-format");
+const { formatter } = require("@penguinpark/mush-format");
 const { joinBraceContinuationLines } = require("./format-output");
 
 test("joins formatter output split by standalone braces", () => {

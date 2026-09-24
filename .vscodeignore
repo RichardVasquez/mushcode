@@ -1,7 +1,15 @@
 .vscode/**
 .vscode-test/**
+.idea/**
 .gitignore
 vsc-extension-quickstart.md
 extension.js
+block-comments.js
+format-output.js
+format-output.test.js
+scripts/**
+releases/**
+package-lock.json
+out/*.map
 node_modules
 

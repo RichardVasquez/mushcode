@@ -15,9 +15,15 @@
   },
   "publisher": "penguinpark",
   "scripts": {
-    "vscode:prepublish": "npm run esbuild-base -- --minify",
+    "vscode:prepublish": "npm run build",
+    "clean": "node -e \"require('fs').rmSync('out', { recursive: true, force: true })\"",
     "esbuild-base": "esbuild extension.js --bundle --outfile=out/main.js --external:vscode --format=cjs --platform=node",
-    "esbuild": "npm run esbuild-base -- --sourcemap"
+    "esbuild": "npm run clean && npm run esbuild-base -- --sourcemap",
+    "test": "node --test format-output.test.js",
+    "build": "npm run clean && npm run esbuild-base -- --minify",
+    "package": "node scripts/package-vsix.js",
+    "install:local": "node scripts/install-vsix.js",
+    "release:local": "npm test && npm run build && npm run package && npm run install:local"
   },
   "categories": [
     "Programming Languages",
@@ -124,10 +130,11 @@
     ]
   },
   "dependencies": {
-    "@digibear/mush-format": "1.2.4",
+    "@penguinpark/mush-format": "1.0.0",
     "axios": "^1.20.0"
   },
   "devDependencies": {
+    "@vscode/vsce": "^3.6.2",
     "esbuild": "^0.15.7"
   }
 }
