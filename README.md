@@ -2,6 +2,11 @@
 
 This tool is a combination of a mush stynax highlighter and a mushcode formatter.
 
+This project is an independent continuation of MUSHCode, maintained by Richard
+Vasquez. It is not intended to remain compatible with later upstream releases.
+The original MIT-licensed work and attribution are retained in
+`LICENSES/MIT.txt`.
+
 ## Basic formatting
 
 The formatter is available as a context menu item.  Just select the code you want to format, right click, and select "Format mushcode".  That's it.
