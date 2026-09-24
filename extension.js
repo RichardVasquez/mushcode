@@ -3,6 +3,7 @@ const { formatter } = require("@digibear/mush-format");
 const { default: axios } = require("axios");
 const path = require("path");
 const { findBlockComments } = require("./block-comments");
+const { joinBraceContinuationLines } = require("./format-output");
 
 const blockCommentLegend = new vscode.SemanticTokensLegend(["comment"]);
 
@@ -110,7 +111,7 @@ function activate(context) {
       }
       const text = document.getText(selection).replace(/\r\n?/g, "\n");
       const formatted = await formatter.format(text, filepath);
-      vscode.env.clipboard.writeText(formatted.data);
+      vscode.env.clipboard.writeText(joinBraceContinuationLines(formatted.data));
     }
   );
 
@@ -135,7 +136,9 @@ function activate(context) {
       const host = vscode.workspace.getConfiguration("game").get("host");
       const port = vscode.workspace.getConfiguration("game").get("port");
       const buff = new Buffer.from(
-        formatted.data.replace(/([\[\]%\{\};])/g, "%$1").replace(/\\/g, "%\\")
+        joinBraceContinuationLines(formatted.data)
+          .replace(/([\[\]%\{\};])/g, "%$1")
+          .replace(/\\/g, "%\\")
       );
       const res = await axios({
         method: "post",

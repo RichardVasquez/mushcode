@@ -4,7 +4,7 @@
   "description": "A softcode unformatter+",
   "repository": "https://github.com/lcanady/mushcode",
   "icon": "mushcode.png",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "engines": {
     "vscode": "^1.71.0"
   },
